@@ -1,7 +1,7 @@
 <template>
   <div className="container">
     <div className="block">
-      <h1 class="block__title">Прогноз погоды</h1>
+      <h1 class="block__title">Прогноз погоды~</h1>
       <p className="block__description">Узнай погоду в своем городе</p>
 
       <div className="block__action">
