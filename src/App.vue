@@ -15,6 +15,18 @@ export default defineComponent({
     cityName(this: { city: string }) {
       return this.city;
     },
+    showTemp(this: { info: any }) {
+      return "Температура: " + this.info?.data?.main?.temp;
+    },
+    showFeelsLike(this: { info: any }) {
+      return "Ощущается как: " + this.info?.data?.main?.feels_like;
+    },
+    showMinTemp(this: { info: any }) {
+      return "Минимальная температура: " + this.info?.data?.main?.temp_min;
+    },
+    showMaxTemp(this: { info: any }) {
+      return "Максимальная температура: " + this.info?.data?.main?.temp_max;
+    },
   },
   methods: {
     getWeather() {
@@ -29,36 +41,35 @@ export default defineComponent({
         .get(`https://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=metric&appid=4ac85ff83534b44db19f8d1c08ec4fcf`)
         .then((res: AxiosResponse<any, any>) => {
           this.info = res;
-          console.log('info', this.info.data)
+          console.log("info", this.info.data.main.temp);
         })
         .catch((error: any) => {
           console.error("Error fetching weather data:", error);
         });
-
-        
     },
-
-    
   },
 });
-
-
 </script>
 
 <template>
-  <div className="container">
-    <div className="block">
+  <div class="container">
+    <div class="block">
       <h1 class="block__title">Прогноз погоды~</h1>
-      <p className="block__description">Узнай погоду в {{ city == "" ? "вашем городе" : cityName }}</p>
+      <p class="block__description">Узнай погоду в {{ city == "" ? "вашем городе" : cityName }}</p>
 
-      <div className="block__action">
-        <input v-model="city" className="block__input" type="text" placeholder="Введите город" />
-        <button @click="getWeather()" v-if="city != ''" className="block__btn">Узнать погоду</button>
-        <button disabled v-else className="block__btn">Узнать погоду</button>
+      <div class="block__action">
+        <input v-model="city" class="block__input" type="text" placeholder="Введите город" />
+        <button @click="getWeather()" v-if="city != ''" class="block__btn">Узнать погоду</button>
+        <button disabled v-else class="block__btn">Узнать погоду</button>
       </div>
       <p class="block__error-text">{{ this.error }}</p>
 
-      <p v-show="info != null">{{ info }}</p>
+      <div v-show="info != null">
+        <p>{{ showTemp }}</p>
+        <p>{{ showFeelsLike }}</p>
+        <p>{{ showMinTemp }}</p>
+        <p>{{ showMaxTemp }}</p>
+      </div>
     </div>
   </div>
 </template>
