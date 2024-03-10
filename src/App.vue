@@ -64,7 +64,7 @@ export default defineComponent({
       </div>
       <p class="block__error-text">{{ this.error }}</p>
 
-      <div v-show="info != null">
+      <div class="block__info" v-show="info != null">
         <p>{{ showTemp }}</p>
         <p>{{ showFeelsLike }}</p>
         <p>{{ showMinTemp }}</p>
@@ -79,10 +79,10 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
   max-width: 1280px;
   height: 100vh;
   margin: 0 auto;
+  padding: 0 20px;
 }
 
 .block {
@@ -107,11 +107,16 @@ export default defineComponent({
   font-size: 18px;
 }
 
+.block__info {
+  margin: 30px 0 0;
+}
+
 .block__action {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 12px;
   margin: 40px 0 0;
 }
