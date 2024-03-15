@@ -61,7 +61,7 @@ export default defineComponent({
         });
     },
     validateInput() {
-      this.city = this.city.replace(/[^A-Za-zА-Яа-яЁё]/g, "");
+      this.city = this.city.replace(/[^A-Za-zА-Яа-яЁё-]/g, "");
     },
 
     resetError() {
