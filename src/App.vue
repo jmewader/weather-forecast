@@ -60,6 +60,9 @@ export default defineComponent({
           this.city = "";
         });
     },
+    validateInput() {
+      this.city = this.city.replace(/[^A-Za-zА-Яа-яЁё]/g, "");
+    },
 
     resetError() {
       this.error = "";
@@ -75,7 +78,7 @@ export default defineComponent({
       <p class="block__description">Узнай погоду в вашем городе</p>
 
       <div class="block__action">
-        <input v-model="city" @keyup.enter="getWeather" class="block__input" @focus="resetError" pattern="[A-Za-zА-Яа-яЁё]+" type="text" placeholder="Введите город" />
+        <input v-model="city" @keyup.enter="getWeather" @input="validateInput" class="block__input" @focus="resetError" type="text" placeholder="Введите город" />
         <button @click="getWeather()" v-if="city != ''" class="block__btn">Узнать погоду</button>
         <button disabled v-else class="block__btn">Узнать погоду</button>
       </div>
