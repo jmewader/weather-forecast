@@ -33,6 +33,7 @@ export default defineComponent({
       if (this.city.trim().length < 2) {
         this.error = "Введите название больше двух символов";
         this.city = "";
+        this.info = null;
         return false;
       }
 
