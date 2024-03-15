@@ -32,6 +32,7 @@ export default defineComponent({
     getWeather() {
       if (this.city.trim().length < 2) {
         this.error = "Введите название больше двух символов";
+        this.city = "";
         return false;
       }
 
@@ -39,13 +40,28 @@ export default defineComponent({
 
       axios
         .get(`https://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=metric&appid=4ac85ff83534b44db19f8d1c08ec4fcf`)
-        .then((res: AxiosResponse<any, any>) => {
-          this.info = res;
-          console.log("info", this.info.data.main.temp);
+        .then((res) => {
+          if (res.status === 200) {
+            this.info = res;
+            console.log("info", this.info.data.main.temp);
+            this.error = "";
+          } else {
+            this.info = null;
+            this.error = "Город не найден";
+          }
         })
-        .catch((error: any) => {
+        .catch((error) => {
           console.error("Error fetching weather data:", error);
+          this.error = "Город не найден";
+          this.info = null;
+        })
+        .finally(() => {
+          this.city = "";
         });
+    },
+
+    resetError() {
+      this.error = "";
     },
   },
 });
@@ -54,15 +70,15 @@ export default defineComponent({
 <template>
   <div class="container">
     <div class="block">
-      <h1 class="block__title">Прогноз погоды~</h1>
-      <p class="block__description">Узнай погоду в {{ city == "" ? "вашем городе" : cityName }}</p>
+      <h1 class="block__title">Прогноз погоды &#9730;</h1>
+      <p class="block__description">Узнай погоду в вашем городе</p>
 
       <div class="block__action">
-        <input v-model="city" class="block__input" type="text" placeholder="Введите город" />
+        <input v-model="city" @keyup.enter="getWeather" class="block__input" @focus="resetError" type="text" placeholder="Введите город" />
         <button @click="getWeather()" v-if="city != ''" class="block__btn">Узнать погоду</button>
         <button disabled v-else class="block__btn">Узнать погоду</button>
       </div>
-      <p class="block__error-text">{{ this.error }}</p>
+      <p class="block__error-text">{{ error }}</p>
 
       <div class="block__info" v-show="info != null">
         <p>{{ showTemp }}</p>
@@ -156,6 +172,7 @@ export default defineComponent({
 }
 
 .block__error-text {
-  color: rgb(168, 0, 0);
+  margin: 12px 0;
+  color: rgb(255, 0, 0);
 }
 </style>
